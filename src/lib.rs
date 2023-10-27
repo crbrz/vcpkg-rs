@@ -197,11 +197,20 @@ impl<S: AsRef<str>> From<S> for TargetTriplet {
                 strip_lib_prefix: false,
             }
         } else {
-            TargetTriplet {
-                triplet: triplet.into(),
-                is_static: true,
-                lib_suffix: "a".into(),
-                strip_lib_prefix: true,
+            if triplet.ends_with("-dynamic") {
+                TargetTriplet {
+                    triplet: triplet.into(),
+                    is_static: false,
+                    lib_suffix: "so".into(),
+                    strip_lib_prefix: true,
+                }
+            } else {
+                TargetTriplet {
+                    triplet: triplet.into(),
+                    is_static: true,
+                    lib_suffix: "a".into(),
+                    strip_lib_prefix: true,
+                }
             }
         }
     }
